@@ -124,27 +124,6 @@ body{
     cursor: pointer;
 }
 
-.fsButtonDiv{
-    position: relative;
-    margin-top:5px;
-    margin-left: 10px;
-}
-.featureInfoDiv{
-    position: relative;
-    margin-top:5px;
-    margin-left: 10px;
-}
-.rulerDiv{
-    position: relative;
-    margin-top:5px;
-    margin-left: 10px;
-}
-.polygonDiv{
-    position: relative;
-    margin-top:5px;
-    margin-left: 10px;
-}
-
 .ol-tooltip{
     position: relative;
     background: rgba(0,0,0,0.5);
@@ -180,10 +159,15 @@ body{
 }
 .zoominDiv,
 .zoomoutDiv,
-.queryDiv{
+.queryDiv,.fsButtonDiv,
+.featureInfoDiv,
+.rulerDiv,
+.polygonDiv
+{
     position: relative;
     margin-top: 5px;
     margin-left: 10px;
+    width: 30px;
 }
 .ol-dragbox{
     border: 2px solid grey;
