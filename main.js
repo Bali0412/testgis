@@ -110,7 +110,6 @@ map.addLayer(vietnamTile);
     });
 };
 
-
 function toggleLayer(event){                        //Hàm bắt sự kiện onchange
     var lyrname = event.target.value;             //Tạo biến gán value khi check (tên của layer)
     var checkedStatus = event.target.checked;     //Trạng thái check hay no check (true or false)
@@ -122,8 +121,6 @@ function toggleLayer(event){                        //Hàm bắt sự kiện onc
         }
     });
 }
-
-
 function selectAll(event){
     var checkedStatus = event.target.checked;
     if(checkedStatus){
