@@ -17,19 +17,35 @@
         <div class="left">
             <div class="toc">
                 <h3>Layers</h3>
-                <input type="checkbox" id="osm" value="Open Street Map" checked onchange="toggleLayer(event)">
-                <label for="osm">Open Street Map</label>
-                <br>
-                <input type="checkbox" id="hcTinh" value='Tinh Vietnam' checked onchange="toggleLayer(event)">
-                <label for="hcTinh">Hành chính Tỉnh</label>
-                <br>
-                <input type="checkbox" id="hcVN" value="Hanh Chinh Viet Nam" checked onchange="toggleLayer(event)">
-                <label for="hcVN">Hành chính Việt Nam</label>
-                <br>
+                <details>
+                    <summary>Bản đồ nền</summary>
+                        <div class="baselayer">
+                        <input type="radio" id="backgroundLayerForm" value="Open Street Map" name="layerbase" checked onchange="basechoose(event)" >
+                        <label for="osm">Open Street Map</label>
+                        <br>
+                        <input type="radio" id="backgroundLayerForm" value="Satellite" name="layerbase" onchange="basechoose(event)">
+                        <label for="satelite">Vệ Tinh</label>
+                        <br>
+                    </div>
+            </details>
+            <details>
+                    <summary><input type="checkbox" id="vectorlayerdiv" value='Layervector' checked onchange="selectAll(event)">
+                    <label for="hcTinh">Lớp bản đồ</label>
+                    </summary>
+                    <div class="vectorlayer">
+                    <input type="checkbox" id="checkboxlayer1" value='Tinh Vietnam' checked onchange="toggleLayer(event)">
+                    <label for="hcTinh">Hành chính Tỉnh</label>
+                    <br>
+                    <input type="checkbox" id="checkboxlayer2" value="Hanh Chinh Viet Nam" checked onchange="toggleLayer(event)">
+                    <label for="hcVN">Hành chính Việt Nam</label>
+                    <br>
+                </div>
+            </details>
             </div>
         </div>
         <div class="right">
             <div id="map"></div>
+            
             <div id="popup" class="ol-popup">
                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                 <div id="popup-content"></div>
