@@ -13,13 +13,23 @@ const map = new ol.Map({
 })
 //Tạo một lớp map nền
 const osmTile = new ol.layer.Tile({
-    title: 'Open Street Map', //đặt tên layer
-    visible:true, //hiển thị true
+    title: 'Open Street Map', //đặt tên layer //hiển thị true
     source: new ol.source.OSM(), //nguồn map
     type:'base',
 })
 
 map.addLayer(osmTile); //thêm layer vào map
+//Tạo lớp nền vệ tinh
+const satellite = new ol.layer.Tile({
+    title: 'Satellite',
+    visible: false,
+    source: new ol.source.TileJSON({
+        url:'https://api.maptiler.com/maps/satellite/tiles.json?key=WljwXjAj1vnRqpgh1v0E',
+    }),
+    type: 'base',
+});
+
+map.addLayer(satellite);
 
 //Tạo lớp rỗng
 const nonebase = new ol.layer.Tile({
@@ -84,17 +94,52 @@ map.addLayer(vietnamTile);
 
 // map.addControl(layerSwitcher);
 
+ function basechoose(event) {
+    var selectedLayer = event.target.value;
+    console.log(selectedLayer);
+    var layers = map.getLayers().getArray();
+
+    layers.forEach(function(layer) {
+        if(layer.get('type') == 'base'){
+        if (layer.get('title') === selectedLayer) {
+            layer.setVisible(true);
+        } else {
+            layer.setVisible(false);
+        }
+    }
+    });
+};
+
+
 function toggleLayer(event){                        //Hàm bắt sự kiện onchange
-    const lyrname = event.target.value;             //Tạo biến gán value khi check (tên của layer)
-    const checkedStatus = event.target.checked;
-    console.log(checkedStatus);     //Trạng thái check hay no check (true or false)
-    const lyrlist = map.getLayers();
+    var lyrname = event.target.value;             //Tạo biến gán value khi check (tên của layer)
+    var checkedStatus = event.target.checked;     //Trạng thái check hay no check (true or false)
+    var lyrlist = map.getLayers();
     console.log(lyrlist);                //Lấy thông tin các layer từ ham getLayer
     lyrlist.forEach(element => {
         if(lyrname == element.get('title')){
             element.setVisible(checkedStatus);
         }
     });
+}
+
+
+function selectAll(event){
+    var checkedStatus = event.target.checked;
+    if(checkedStatus){
+        document.getElementById('checkboxlayer1').checked = true;
+        document.getElementById('checkboxlayer2').checked = true;
+        var lyrlist = map.getLayers().getArray();
+        console.log(lyrlist);
+        lyrlist.forEach(element =>{
+            if(element.get('title') == 'Tinh Vietnam'){
+                element.setVisible(true);
+            }
+        })
+    }else{
+        document.getElementById('checkboxlayer1').checked = false;
+        document.getElementById('checkboxlayer2').checked = false;
+    }
 }
 
 //Vị trí chuột
@@ -147,6 +192,7 @@ homeElement.appendChild(homeButton);
 
 const homeControl = new ol.control.Control({
     element:homeElement,
+    
 })
 
 homeButton.addEventListener('click',()=>{
@@ -192,6 +238,7 @@ featureInfoElement.appendChild(featureInfoButton);
 
 var featureInfoControl = new ol.control.Control({
     element:featureInfoElement,
+    
 })
 var featureInfoflag = false;
 featureInfoButton.addEventListener('click',()=>{
@@ -236,6 +283,7 @@ rulerElement.appendChild(rulerButton);
 
 var rulerControl = new ol.control.Control({
     element:rulerElement,
+    
 })
 map.addControl(rulerControl);
 
@@ -283,7 +331,7 @@ polygonButton.addEventListener('click',()=>{
         map.removeInteraction(draw);
         source.clear();
         const elements = document.getElementsByClassName('ol-tooltip ol-tooltip-static');
-        while (elements>0) elements[0].remove();
+        while (elements.length>0) elements[0].remove();
     }
 })
 
@@ -423,9 +471,11 @@ function createHelpTooltip(){
     map.addOverlay(helpTooltip);
 }
 console.log(helpTooltipElement);
-map.getViewport().addEventListener('mouseout',()=>{
-    helpTooltipElement.classList.add('hidden');
-});
+if(polygonflag){
+    map.getViewport().addEventListener('mouseout',()=>{
+        helpTooltipElement.classList.add('hidden');
+    });
+}
 
 
 
