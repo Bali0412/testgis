@@ -1,4 +1,4 @@
-
+import {homeControl, fsControl, featureInfoControl, featureInfoflag} from "./buttoncontrol.js";
 
 // Tạo view cho map
 const mapView = new ol.View({
@@ -7,10 +7,12 @@ const mapView = new ol.View({
 })
 
 // tạo một map
+
 const map = new ol.Map({
     target:'map', //gán map cho id 
     view: mapView,
 })
+
 //Tạo một lớp map nền
 const osmTile = new ol.layer.Tile({
     title: 'Open Street Map', //đặt tên layer //hiển thị true
@@ -20,16 +22,16 @@ const osmTile = new ol.layer.Tile({
 
 map.addLayer(osmTile); //thêm layer vào map
 //Tạo lớp nền vệ tinh
-const satellite = new ol.layer.Tile({
+const satellite = new ol.layer.Tile({ //sử dụng đối tượng tile để tạo lớp
     title: 'Satellite',
     visible: false,
-    source: new ol.source.TileJSON({
+    source: new ol.source.TileJSON({ //sử dụng nguồn từ TileJSON , API của maptiler
         url:'https://api.maptiler.com/maps/satellite/tiles.json?key=WljwXjAj1vnRqpgh1v0E',
     }),
     type: 'base',
 });
 
-map.addLayer(satellite);
+map.addLayer(satellite);// thêm lớp mới
 
 //Tạo lớp rỗng
 const nonebase = new ol.layer.Tile({
@@ -55,7 +57,7 @@ const vietnamTile = new ol.layer.Tile({
             'TILED':true,
         },
         serverType:'geoserver',
-        visible:true,
+        //visible:true,
     })  
 });
 
@@ -70,7 +72,7 @@ const vietnamTile_1 = new ol.layer.Tile({
             'TILED':true,
         },
         serverType:'geoserver',
-        visible:true,
+        //visible:true,
     })  
 });
 
@@ -94,50 +96,7 @@ map.addLayer(vietnamTile);
 
 // map.addControl(layerSwitcher);
 
- function basechoose(event) {
-    var selectedLayer = event.target.value;
-    console.log(selectedLayer);
-    var layers = map.getLayers().getArray();
-
-    layers.forEach(function(layer) {
-        if(layer.get('type') == 'base'){
-        if (layer.get('title') === selectedLayer) {
-            layer.setVisible(true);
-        } else {
-            layer.setVisible(false);
-        }
-    }
-    });
-};
-
-function toggleLayer(event){                        //Hàm bắt sự kiện onchange
-    var lyrname = event.target.value;             //Tạo biến gán value khi check (tên của layer)
-    var checkedStatus = event.target.checked;     //Trạng thái check hay no check (true or false)
-    var lyrlist = map.getLayers();
-    console.log(lyrlist);                //Lấy thông tin các layer từ ham getLayer
-    lyrlist.forEach(element => {
-        if(lyrname == element.get('title')){
-            element.setVisible(checkedStatus);
-        }
-    });
-}
-function selectAll(event){
-    var checkedStatus = event.target.checked;
-    if(checkedStatus){
-        document.getElementById('checkboxlayer1').checked = true;
-        document.getElementById('checkboxlayer2').checked = true;
-        var lyrlist = map.getLayers().getArray();
-        console.log(lyrlist);
-        lyrlist.forEach(element =>{
-            if(element.get('title') == 'Tinh Vietnam'){
-                element.setVisible(true);
-            }
-        })
-    }else{
-        document.getElementById('checkboxlayer1').checked = false;
-        document.getElementById('checkboxlayer2').checked = false;
-    }
-}
+ 
 
 //Vị trí chuột
  const mousePoisition = new ol.control.MousePosition({ //tạo một công cụ
@@ -179,69 +138,28 @@ closer.onclick = ()=>{
 }
 
 //Thêm nút home
-const homeButton = document.createElement('button');
-homeButton.innerHTML='<img src="image/home.png" alt="" style="width:20px; height:20px">';
-homeButton.className = 'myButton';
+// const homeButton = document.createElement('button');
+// homeButton.innerHTML='<img src="image/home.png" alt="" style="width:20px; height:20px">';
+// homeButton.className = 'myButton';
 
-const homeElement = document.createElement('div');
-homeElement.className = 'homeButtonDiv';
-homeElement.appendChild(homeButton);
+// const homeElement = document.createElement('div');
+// homeElement.className = 'homeButtonDiv';
+// homeElement.appendChild(homeButton);
 
-const homeControl = new ol.control.Control({
-    element:homeElement,
+// const homeControl = new ol.control.Control({
+//     element:homeElement,
     
-})
+// })
 
-homeButton.addEventListener('click',()=>{
-    location.href = "index.html"
-})
+// homeButton.addEventListener('click',()=>{
+//     location.href = "index.html"
+// })
+
 map.addControl(homeControl);
 //Thêm nút toàn màn hình
-const fsButton = document.createElement('button');
-fsButton.innerHTML='<img src="image/fullscreen.png" alt="" style="width:20px; height:20px">';
-fsButton.className = 'myButton';
-
-const fsElement = document.createElement('div');
-fsElement.className = 'fsButtonDiv';
-fsElement.appendChild(fsButton);
-
-const fsControl = new ol.control.Control({
-    element:fsElement,
-})
 map.addControl(fsControl);
-fsButton.addEventListener('click',()=>{
-    const mapEle = document.getElementById("map");
-
-    if(mapEle.requestFullscreen){
-        mapEle.requestFullscreen();
-    }else if(mapEle.msRequestFullscreen){
-        mapEle.msRequestFullscreen();
-    }else if(mapEle.mozRequestFullscreen){
-        mapEle.mozRequestFullscreen();
-    }else if(mapEle.mswebkitRequestFullscreen){
-        mapEle.mswebkitRequestFullscreen();
-    }
-})
-
 //Bật tắt trường thông tin
-var featureInfoButton = document.createElement('button');
-featureInfoButton.innerHTML='<img src="image/info.png" alt="" style="width:20px; height:20px">';
-featureInfoButton.className = 'myButton';
-featureInfoButton.id = 'featureInfoButton';
 
-var featureInfoElement = document.createElement('div');
-featureInfoElement.className = 'featureInfoDiv';
-featureInfoElement.appendChild(featureInfoButton);
-
-var featureInfoControl = new ol.control.Control({
-    element:featureInfoElement,
-    
-})
-var featureInfoflag = false;
-featureInfoButton.addEventListener('click',()=>{
-    featureInfoButton.classList.toggle('clicked');
-    featureInfoflag = !featureInfoflag;
-})
 
 
 map.addControl(featureInfoControl);
@@ -933,6 +851,3 @@ function newaddRowHandlers(){
         }(rows[i]);
     }
 }
-
-
-
